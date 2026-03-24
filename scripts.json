@@ -21,7 +21,7 @@
   },
   {
   "name": "Youtube RSS Feed",
-  "downloadURL": "https://greasyfork.org/scripts/YouTube%20RSS%20Feed.user.js/code/YouTube%20RSS%20Feed.user.js.user.js",
+  "downloadURL": "https://update.greasyfork.org/scripts/1760/YouTube%20RSS%20Feed.user.js",
   "description": "Adds an RSS feed button to YouTube channels next to the subscribe button"
 }
 ]
