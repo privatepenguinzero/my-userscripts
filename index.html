@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>My Userscripts Hub</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    h1 { color: #333; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    a.install-btn { text-decoration: none; color: white; background-color: #28a745; padding: 5px 10px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<h1>📦 My Userscripts Hub</h1>
+<p>Usa i link per installare gli script su Violentmonkey (desktop) o Stay (iOS).</p>
+
+<table>
+  <tr>
+    <th>Nome Script</th>
+    <th>Installa</th>
+    <th>Descrizione</th>
+  </tr>
+
+  <!-- Esempio di riga da duplicare -->
+  <tr>
+    <td>MoreCAPTCHA</td>
+    <td><a class="install-btn" href=https://update.greasyfork.org/scripts/31088/MoreCAPTCHA.user.js" target="_blank">Install</a></td>
+    <td>Speeds up solving Google reCAPTCHA challenges by shortening transition effects and providing continuous selection ability.</td>
+  </tr>
+
+  <tr>
+    <td>FMHY Base64 Auto Decoder</td>
+    <td><a class="install-btn" href="https://update.greasyfork.org/scripts/485772/FMHY%20Base64%20Auto%20Decoder.user.js" target="_blank">Install</a></td>
+    <td>Decode base64-encoded links in some pastebins and make URLs clickable</td>
+  </tr>
+
+  <tr>
+    <td>Anti adblock detector</td>
+    <td><a class="install-btn" href="https://update.greasyfork.org/scripts/499831/Anti%20adblock%20detector.user.js" target="_blank">Install</a></td>
+    <td>Removes most (not all) adblock detectors that ask you to disable your ad blocking extension.</td>
+  </tr>
+ 
+  <tr>
+    <td>YT Playlist Cleaner</td>
+    <td><a class="install-btn" href="https://update.greasyfork.org/scripts/485772/FMHY%20Base64%20Auto%20Decoder.user.js" target="_blank">Install</a></td>
+    <td>A handy tool to tidy up your YouTube playlists with custom settings and smart features</td>
+  </tr>
+ 
+  <tr>
+    <td>YouTube RSS Feed</td>
+    <td><a class="install-btn" href="https://update.greasyfork.org/scripts/1760/YouTube%20RSS%20Feed.user.js" target="_blank">Install</a></td>
+    <td>Adds an RSS feed button to YouTube channels next to the subscribe button</td>
+  </tr>
+
+
+  <!-- Fine esempio -->
+</table>
+
+<br>
+<button onclick="installAll()">🚀 Install All</button>
+
+<script>
+function installAll() {
+  const links = document.querySelectorAll("a.install-btn");
+  links.forEach((link, i) => {
+    setTimeout(() => {
+      window.open(link.href, "_blank");
+    }, i * 800); // apre i link uno alla volta ogni 0.8s
+  });
+}
+</script>
+
+</body>
+</html>
