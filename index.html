@@ -4,12 +4,110 @@
   <meta charset="UTF-8">
   <title>My Userscripts Hub</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 30px; }
-    h1 { color: #333; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-    th { background-color: #f2f2f2; }
-    a.install-btn { text-decoration: none; color: white; background-color: #28a745; padding: 5px 10px; border-radius: 3px; }
+    /* Catppuccin Mocha Palette */
+    :root {
+      --bg: #1e1e2e;
+      --surface: #313244;
+      --overlay: #45475a;
+      --text: #cdd6f4;
+      --subtext: #bac2de;
+      --accent-orange: #f5a97f;
+      --accent-blue: #89b4fa;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 30px;
+    }
+
+    h1 {
+      color: var(--accent-orange);
+      border-bottom: 2px solid var(--accent-orange);
+      padding-bottom: 5px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background-color: var(--surface);
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid var(--overlay);
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--overlay);
+      color: var(--accent-orange);
+    }
+
+    tr:nth-child(even) {
+      background-color: #2a2a3b;
+    }
+
+    a.install-btn {
+      text-decoration: none;
+      color: white;
+      background-color: var(--accent-orange);
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background 0.2s;
+    }
+
+    a.install-btn:hover {
+      background-color: #f7b988;
+    }
+
+    button {
+      background-color: var(--accent-orange);
+      color: var(--bg);
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #f7b988;
+    }
+
+    p {
+      color: var(--subtext);
+    }
+
+    form {
+      margin-top: 30px;
+      background-color: var(--surface);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--overlay);
+    }
+
+    input[type=text], input[type=password] {
+      width: 80%;
+      padding: 5px;
+      margin: 5px 0;
+      border: 1px solid var(--overlay);
+      border-radius: 4px;
+      background-color: #2a2a3b;
+      color: var(--text);
+    }
+
+    pre#output {
+      background-color: var(--surface);
+      color: var(--text);
+      padding: 10px;
+      border: 1px solid var(--overlay);
+      overflow-x: auto;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
@@ -17,60 +115,99 @@
 <h1>📦 My Userscripts Hub</h1>
 <p>Usa i link per installare gli script su Violentmonkey (desktop) o Stay (iOS).</p>
 
-<table>
+<table id="scriptTable">
   <tr>
     <th>Nome Script</th>
     <th>Installa</th>
     <th>Descrizione</th>
   </tr>
-
-  <!-- Esempio di riga da duplicare -->
-  <tr>
-    <td>MoreCAPTCHA</td>
-    <td><a class="install-btn" href="https://update.greasyfork.org/scripts/31088/MoreCAPTCHA.user.js" target="_blank">Install</a></td>
-    <td>Speeds up solving Google reCAPTCHA challenges by shortening transition effects and providing continuous selection ability.</td>
-  </tr>
-
-  <tr>
-    <td>FMHY Base64 Auto Decoder</td>
-    <td><a class="install-btn" href="https://update.greasyfork.org/scripts/485772/FMHY%20Base64%20Auto%20Decoder.user.js" target="_blank">Install</a></td>
-    <td>Decode base64-encoded links in some pastebins and make URLs clickable</td>
-  </tr>
-
-  <tr>
-    <td>Anti adblock detector</td>
-    <td><a class="install-btn" href="https://update.greasyfork.org/scripts/499831/Anti%20adblock%20detector.user.js" target="_blank">Install</a></td>
-    <td>Removes most (not all) adblock detectors that ask you to disable your ad blocking extension.</td>
-  </tr>
- 
-  <tr>
-    <td>YT Playlist Cleaner</td>
-    <td><a class="install-btn" href="https://update.greasyfork.org/scripts/485772/FMHY%20Base64%20Auto%20Decoder.user.js" target="_blank">Install</a></td>
-    <td>A handy tool to tidy up your YouTube playlists with custom settings and smart features</td>
-  </tr>
- 
-  <tr>
-    <td>YouTube RSS Feed</td>
-    <td><a class="install-btn" href="https://update.greasyfork.org/scripts/1760/YouTube%20RSS%20Feed.user.js" target="_blank">Install</a></td>
-    <td>Adds an RSS feed button to YouTube channels next to the subscribe button</td>
-  </tr>
-
-
-  <!-- Fine esempio -->
 </table>
 
 <br>
 <button onclick="installAll()">🚀 Install All</button>
 
+<!-- Form autocompile -->
+<form id="addScriptForm">
+  <h2>➕ Aggiungi nuovo script</h2>
+  <p>Inserisci il link al .user.js o alla pagina GreasyFork. Genererà JSON pronto da aggiungere a <code>scripts.json</code>.</p>
+  <label>Password (opzionale): <input type="password" id="password"></label><br><br>
+  <label>Link al .user.js o pagina GreasyFork: <input type="text" id="scriptLink" placeholder="https://greasyfork.org/.../code/script.user.js"></label><br><br>
+  <button type="submit">Genera JSON</button>
+</form>
+
+<pre id="output"></pre>
+
 <script>
+// Carica gli script da scripts.json
+async function loadScripts() {
+  try {
+    const response = await fetch('scripts.json');
+    const scripts = await response.json();
+    const table = document.getElementById('scriptTable');
+
+    scripts.forEach(script => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${script.name}</td>
+        <td><a class="install-btn" href="${script.downloadURL}" target="_blank">Install</a></td>
+        <td>${script.description}</td>
+      `;
+      table.appendChild(row);
+    });
+  } catch(err) {
+    console.error("Errore caricamento scripts.json:", err);
+  }
+}
+loadScripts();
+
+// Install All
 function installAll() {
-  const links = document.querySelectorAll("a.install-btn");
+  const links = document.querySelectorAll("#scriptTable a.install-btn");
   links.forEach((link, i) => {
-    setTimeout(() => {
-      window.open(link.href, "_blank");
-    }, i * 800); // apre i link uno alla volta ogni 0.8s
+    setTimeout(() => { window.open(link.href, "_blank"); }, i * 800);
   });
 }
+
+// Form autocompile -> genera JSON
+document.getElementById("addScriptForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const link = document.getElementById("scriptLink").value.trim();
+  if(!link){ alert("Inserisci un link valido"); return; }
+
+  let userJSUrl = link;
+
+  // Converti link pagina GreasyFork in link diretto
+  if(link.includes("greasyfork.org/scripts/") && !link.includes("/code/")){
+    const parts = link.split("/");
+    const scriptId = parts[parts.length-1];
+    userJSUrl = `https://greasyfork.org/scripts/${scriptId}/code/${parts[parts.length-1]}.user.js`;
+  }
+
+  try {
+    const response = await fetch(userJSUrl);
+    if(!response.ok) throw new Error("Errore nel download dello script (CORS o link non valido)");
+    const text = await response.text();
+
+    const nameMatch = text.match(/\/\/\s*@name\s+(.*)/);
+    const descMatch = text.match(/\/\/\s*@description\s+(.*)/);
+    const downloadMatch = text.match(/\/\/\s*@downloadURL\s+(.*)/);
+
+    const name = nameMatch ? nameMatch[1].trim() : "No Name";
+    const description = descMatch ? descMatch[1].trim() : "";
+    const downloadURL = downloadMatch ? downloadMatch[1].trim() : userJSUrl;
+
+    const jsonEntry = {
+      name,
+      downloadURL,
+      description
+    };
+
+    document.getElementById("output").textContent = JSON.stringify(jsonEntry, null, 2);
+
+  } catch(err){
+    document.getElementById("output").textContent = `Errore: ${err.message}\nPuoi inserire manualmente i dati in JSON.`;
+  }
+});
 </script>
 
 </body>
