@@ -56,20 +56,23 @@ pre#output { background-color: var(--surface); color: var(--text); padding: 10px
 <button id="copyBtn">📋 Copia JSON negli appunti</button>
 
 <script>
+// Funzione per aggiungere riga alla tabella
+function addScriptToTable(script) {
+  const table = document.getElementById('scriptTable');
+  const row = document.createElement('tr');
+  row.innerHTML = `
+<td>${script.name}</td>
+<td><a class="install-btn" href="${script.downloadURL}" target="_blank">Install</a></td>
+<td>${script.description}</td>`;
+  table.appendChild(row);
+}
+
 // Carica scripts dal JSON locale
 async function loadScripts() {
   try {
     const response = await fetch('scripts.json');
     const scripts = await response.json();
-    const table = document.getElementById('scriptTable');
-    scripts.forEach(script => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-<td>${script.name}</td>
-<td><a class="install-btn" href="${script.downloadURL}" target="_blank">Install</a></td>
-<td>${script.description}</td>`;
-      table.appendChild(row);
-    });
+    scripts.forEach(script => addScriptToTable(script));
   } catch(err) { console.error("Errore caricamento scripts.json:", err); }
 }
 loadScripts();
@@ -80,14 +83,13 @@ function installAll() {
   links.forEach((link, i) => setTimeout(() => { window.open(link.href, "_blank"); }, i*800));
 }
 
-// Form smart autocompile JSON
+// Form smart autocompile JSON con aggiornamento live
 document.getElementById("addScriptForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const link = document.getElementById("scriptLink").value.trim();
   if(!link){ alert("Inserisci un link valido"); return; }
 
   let userJSUrl = link;
-  // Se link pagina GreasyFork → converte in .user.js
   if(link.includes("greasyfork.org/scripts/") && !link.includes("/code/")){
     const parts = link.split("/");
     const scriptId = parts[parts.length-1];
@@ -98,7 +100,6 @@ document.getElementById("addScriptForm").addEventListener("submit", async (e) =>
   let description = "";
   let downloadURL = userJSUrl;
 
-  // Tenta fetch + proxy CORS
   try {
     const proxy = "https://api.allorigins.win/raw?url=";
     const response = await fetch(proxy + encodeURIComponent(userJSUrl));
@@ -121,6 +122,9 @@ document.getElementById("addScriptForm").addEventListener("submit", async (e) =>
 
   const jsonEntry = { name, downloadURL, description };
   document.getElementById("output").textContent = JSON.stringify(jsonEntry, null, 2);
+
+  // Aggiorna tabella immediatamente
+  addScriptToTable(jsonEntry);
 });
 
 // Copia JSON negli appunti
