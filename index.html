@@ -180,7 +180,7 @@ document.getElementById("addScriptForm").addEventListener("submit", async (e) =>
   if(link.includes("greasyfork.org/scripts/") && !link.includes("/code/")){
     const parts = link.split("/");
     const scriptId = parts[parts.length-1];
-    userJSUrl = `https://greasyfork.org/scripts/${scriptId}/code/${parts[parts.length-1]}.user.js`;
+    userJSUrl = `https://update.greasyfork.org/scripts/${scriptId}/code/${parts[parts.length-1]}.user.js`;
   }
 
   try {
