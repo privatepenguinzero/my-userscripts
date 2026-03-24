@@ -1,0 +1,17 @@
+[
+  {
+    "name": "MoreCAPTCHA",
+    "downloadURL": "https://update.greasyfork.org/scripts/31088/MoreCAPTCHA.user.js",
+    "description": "Speeds up solving Google reCAPTCHA challenges by shortening transition effects and providing continuous selection ability."
+  },
+  {
+    "name": "FMHY Base64 Auto Decoder",
+    "downloadURL": "https://update.greasyfork.org/scripts/485772/FMHY%20Base64%20Auto%20Decoder.user.js",
+    "description": "Decode base64-encoded links in some pastebins and make URLs clickable"
+  },
+  {
+    "name": "Anti adblock detector",
+    "downloadURL": "https://update.greasyfork.org/scripts/499831/Anti%20adblock%20detector.user.js",
+    "description": "Removes most (not all) adblock detectors that ask you to disable your ad blocking extension."
+  }
+]
