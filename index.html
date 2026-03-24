@@ -25,7 +25,7 @@ button { background-color: var(--accent-orange); color: var(--bg); padding: 10px
 button:hover { background-color: #f7b988; }
 p { color: var(--subtext); }
 form { margin-top: 30px; background-color: var(--surface); padding: 15px; border-radius: 8px; border: 1px solid var(--overlay); }
-input[type=text], input[type=password] { width: 80%; padding: 5px; margin: 5px 0; border: 1px solid var(--overlay); border-radius: 4px; background-color: #2a2a3b; color: var(--text); }
+input[type=text] { width: 80%; padding: 5px; margin: 5px 0; border: 1px solid var(--overlay); border-radius: 4px; background-color: #2a2a3b; color: var(--text); }
 pre#output { background-color: var(--surface); color: var(--text); padding: 10px; border: 1px solid var(--overlay); overflow-x: auto; margin-top: 15px; }
 </style>
 </head>
@@ -80,7 +80,7 @@ function installAll() {
   links.forEach((link, i) => setTimeout(() => { window.open(link.href, "_blank"); }, i*800));
 }
 
-// Form autocompile JSON
+// Form smart autocompile JSON
 document.getElementById("addScriptForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const link = document.getElementById("scriptLink").value.trim();
@@ -94,9 +94,30 @@ document.getElementById("addScriptForm").addEventListener("submit", async (e) =>
     userJSUrl = `https://greasyfork.org/scripts/${scriptId}/code/${parts[parts.length-1]}.user.js`;
   }
 
-  const name = prompt("Nome script (manuale se fetch non funziona):");
-  const description = prompt("Descrizione script:");
-  const downloadURL = userJSUrl;
+  let name = "";
+  let description = "";
+  let downloadURL = userJSUrl;
+
+  // Tenta fetch + proxy CORS
+  try {
+    const proxy = "https://api.allorigins.win/raw?url=";
+    const response = await fetch(proxy + encodeURIComponent(userJSUrl));
+    if(!response.ok) throw new Error("Fetch fallito");
+    const text = await response.text();
+    const nameMatch = text.match(/\/\/\s*@name\s+(.*)/);
+    const descMatch = text.match(/\/\/\s*@description\s+(.*)/);
+    const downloadMatch = text.match(/\/\/\s*@downloadURL\s+(.*)/);
+
+    name = nameMatch ? nameMatch[1].trim() : prompt("Nome script:");
+    description = descMatch ? descMatch[1].trim() : prompt("Descrizione script:");
+    downloadURL = downloadMatch ? downloadMatch[1].trim() : userJSUrl;
+
+  } catch(err){
+    // Fallback manuale se fetch fallisce
+    name = prompt("Nome script (manuale se fetch non funziona):");
+    description = prompt("Descrizione script:");
+    downloadURL = userJSUrl;
+  }
 
   const jsonEntry = { name, downloadURL, description };
   document.getElementById("output").textContent = JSON.stringify(jsonEntry, null, 2);
